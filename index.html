@@ -186,7 +186,6 @@
 
         const ICON_SETS = [["💪", "🔥", "🏋️"], ["⚡", "🏆", "✨"], ["👑", "💎", "🦁"], ["⚔️", "🔱", "🧿"]];
         
-        // BASE DE DATOS MANUAL PARA EDITAR IMÁGENES UNA A UNA
         const defaultWorkouts = {
             dorso: [
                 { name: "PRESS PLANO", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2IeeZS4HvXUvKMQ7ll9rMHT2ZwljqFEaP3w&usqp=CAU", prev: "", current: "" },
@@ -215,10 +214,11 @@
             ]
         };
 
-        let workouts = JSON.parse(localStorage.getItem('gymDataV10')) || defaultWorkouts;
-        let attendance = JSON.parse(localStorage.getItem('gymAttendanceV10')) || [0, 0, 0, 0];
-        let routineDates = JSON.parse(localStorage.getItem('routineDatesV10')) || { dorso: { ant: "", hoy: "" }, pierna: { ant: "", hoy: "" } };
-        let globalWeight = localStorage.getItem('globalWeightV10') || "75kg";
+        // ACTUALIZADO A V11 PARA FORZAR RECARGA DE IMÁGENES
+        let workouts = JSON.parse(localStorage.getItem('gymDataV11')) || defaultWorkouts;
+        let attendance = JSON.parse(localStorage.getItem('gymAttendanceV11')) || [0, 0, 0, 0];
+        let routineDates = JSON.parse(localStorage.getItem('routineDatesV11')) || { dorso: { ant: "", hoy: "" }, pierna: { ant: "", hoy: "" } };
+        let globalWeight = localStorage.getItem('globalWeightV11') || "75kg";
 
         function init() {
             document.getElementById('user-weight').value = globalWeight;
@@ -232,7 +232,7 @@
             const container = document.getElementById(id);
             container.innerHTML = workouts[type].map((ex, i) => `
                 <div class="exercise-card">
-                    <img src="${ex.img}" class="exercise-img">
+                    <img src="${ex.img}" class="exercise-img" onerror="this.src='https://via.placeholder.com/100/18181b/f97316?text=Error'">
                     <div class="exercise-info">
                         <input class="exercise-name" value="${ex.name}" oninput="workouts['${type}'][${i}].name=this.value; save()">
                         <div class="stats-container">
@@ -293,45 +293,3 @@
             p.style.top = '-5vh';
             p.style.animationDuration = (Math.random() * 2 + 3) + 's';
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 5000);
-        }
-
-        function shiftData() {
-            workouts[currentActiveRoutine].forEach(ex => {
-                if(ex.current) ex.prev = ex.current;
-                ex.current = "";
-            });
-            save();
-            renderList(currentActiveRoutine, currentActiveRoutine + '-list');
-            closeModal();
-        }
-
-        function showRoutine(type) {
-            currentActiveRoutine = type;
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + type).classList.add('active');
-            document.getElementById('dorso-list').style.display = type === 'dorso' ? 'flex' : 'none';
-            document.getElementById('pierna-list').style.display = type === 'pierna' ? 'flex' : 'none';
-            document.getElementById('routine-title').innerText = type;
-            document.getElementById('date-ant').value = routineDates[type].ant;
-            document.getElementById('date-hoy').value = routineDates[type].hoy;
-        }
-
-        function save() { 
-            localStorage.setItem('gymDataV10', JSON.stringify(workouts)); 
-            localStorage.setItem('gymAttendanceV10', JSON.stringify(attendance));
-            localStorage.setItem('routineDatesV10', JSON.stringify(routineDates));
-        }
-        function saveGlobalWeight() { localStorage.setItem('globalWeightV10', document.getElementById('user-weight').value); }
-        function updateRoutineDates() {
-            routineDates[currentActiveRoutine].ant = document.getElementById('date-ant').value;
-            routineDates[currentActiveRoutine].hoy = document.getElementById('date-hoy').value;
-            save();
-        }
-        function openModal() { document.getElementById('custom-modal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('custom-modal').style.display = 'none'; }
-
-        init();
-    </script>
-</body>
-</html>
