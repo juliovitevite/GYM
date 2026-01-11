@@ -2,32 +2,18 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Gym Tracker - Elite Master</title>
+    
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2936/2936886.png">
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2936/2936886.png">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Gym Elite">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-
-<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2936/2936886.png">
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2936/2936886.png">
-
-<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22GymElite%22,%22short_name%22:%22GymElite%22,%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22%2309090b%22,%22theme_color%22:%22%2309090b%22}">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2936/2936886.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gym Elite">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22GymElite%22,%22short_name%22:%22GymElite%22,%22start_url%22:%22index.html%22,%22display%22:%22standalone%22,%22background_color%22:%22%2309090b%22,%22theme_color%22:%22%2309090b%22}">
 
     <style>
-        body {
-    /* Esto protege el contenido de la zona de la cámara/muesca */
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-}
-
         :root {
             --bg-color: #09090b;
             --card-bg: #18181b;
@@ -45,7 +31,11 @@
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            margin: 0; padding: 15px; overflow-x: hidden;
+            margin: 0; 
+            padding: 15px; 
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            overflow-x: hidden;
             transition: box-shadow 1s;
         }
 
@@ -98,7 +88,7 @@
             background: var(--card-bg); border-radius: 14px; padding: 10px;
             display: flex; align-items: center; gap: 12px; border: var(--border-style);
         }
-        .exercise-img { width: 50px; height: 50px; border-radius: 8px; border: 1px solid #3f3f46; }
+        .exercise-img { width: 50px; height: 50px; border-radius: 8px; border: 1px solid #3f3f46; object-fit: cover; }
         .exercise-info { flex: 1; }
         .exercise-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); background: transparent; border: none; width: 100%; margin-bottom: 5px; outline: none; }
 
@@ -106,7 +96,6 @@
         .stat-box { flex: 1; background: #09090b; padding: 5px; border-radius: 8px; border: 1px solid #27272a; text-align: center; }
         .stat-label { font-size: 0.5rem; color: var(--text-dim); display: block; }
         
-        /* INPUTS CON PLACEHOLDER MEJORADO */
         .val { 
             width: 100%; background: transparent; border: none; text-align: center; 
             color: var(--text-main); font-weight: 600; outline: none; font-size: 0.75rem; 
@@ -193,17 +182,43 @@
             "Semana perfecta. Los stacks de Hero están al máximo.",
             "La constancia es lo que convierte lo ordinario en extraordinario.",
             "Fuerza, coraje y voluntad. Hoy lo demostraste todo."
-        ]; // Puedes expandir a 100 frases fácilmente aquí.
+        ];
 
         const ICON_SETS = [["💪", "🔥", "🏋️"], ["⚡", "🏆", "✨"], ["👑", "💎", "🦁"], ["⚔️", "🔱", "🧿"]];
         
-        let workouts = JSON.parse(localStorage.getItem('gymDataV9')) || {
-            dorso: Array(13).fill().map((_, i) => ({ name: `Dorso Ex ${i+1}`, img: `https://via.placeholder.com/100/18181b/f97316?text=${i+1}`, prev: "", current: "" })),
-            pierna: Array(8).fill().map((_, i) => ({ name: `Pierna Ex ${i+1}`, img: `https://via.placeholder.com/100/18181b/f97316?text=${i+1}`, prev: "", current: "" }))
+        // BASE DE DATOS MANUAL PARA EDITAR IMÁGENES UNA A UNA
+        const defaultWorkouts = {
+            dorso: [
+                { name: "PRESS PLANO", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2IeeZS4HvXUvKMQ7ll9rMHT2ZwljqFEaP3w&usqp=CAU", prev: "", current: "" },
+                { name: "JULIO", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFZzN20xk3Sa3v3v2mVDbZ9gM3_niTzhEIHg&usqp=CAU", prev: "", current: "" },
+                { name: "Remo con Barra", img: "https://via.placeholder.com/100/18181b/f97316?text=3", prev: "", current: "" },
+                { name: "Remo Gironda", img: "https://via.placeholder.com/100/18181b/f97316?text=4", prev: "", current: "" },
+                { name: "Pull Over Polea", img: "https://via.placeholder.com/100/18181b/f97316?text=5", prev: "", current: "" },
+                { name: "Remo Mancuerna", img: "https://via.placeholder.com/100/18181b/f97316?text=6", prev: "", current: "" },
+                { name: "Facepull", img: "https://via.placeholder.com/100/18181b/f97316?text=7", prev: "", current: "" },
+                { name: "Pájaros", img: "https://via.placeholder.com/100/18181b/f97316?text=8", prev: "", current: "" },
+                { name: "Encogimientos", img: "https://via.placeholder.com/100/18181b/f97316?text=9", prev: "", current: "" },
+                { name: "Hiperextensiones", img: "https://via.placeholder.com/100/18181b/f97316?text=10", prev: "", current: "" },
+                { name: "Remo en T", img: "https://via.placeholder.com/100/18181b/f97316?text=11", prev: "", current: "" },
+                { name: "Jalón Supino", img: "https://via.placeholder.com/100/18181b/f97316?text=12", prev: "", current: "" },
+                { name: "Peso Muerto", img: "https://via.placeholder.com/100/18181b/f97316?text=13", prev: "", current: "" }
+            ],
+            pierna: [
+                { name: "Sentadilla Libre", img: "https://via.placeholder.com/100/18181b/f97316?text=P1", prev: "", current: "" },
+                { name: "Prensa 45°", img: "https://via.placeholder.com/100/18181b/f97316?text=P2", prev: "", current: "" },
+                { name: "Extensión Cuádriceps", img: "https://via.placeholder.com/100/18181b/f97316?text=P3", prev: "", current: "" },
+                { name: "Curl Femoral", img: "https://via.placeholder.com/100/18181b/f97316?text=P4", prev: "", current: "" },
+                { name: "Peso Muerto Rumano", img: "https://via.placeholder.com/100/18181b/f97316?text=P5", prev: "", current: "" },
+                { name: "Zancadas", img: "https://via.placeholder.com/100/18181b/f97316?text=P6", prev: "", current: "" },
+                { name: "Gemelos Sentado", img: "https://via.placeholder.com/100/18181b/f97316?text=P7", prev: "", current: "" },
+                { name: "Aductores Máquina", img: "https://via.placeholder.com/100/18181b/f97316?text=P8", prev: "", current: "" }
+            ]
         };
-        let attendance = JSON.parse(localStorage.getItem('gymAttendanceV9')) || [0, 0, 0, 0];
-        let routineDates = JSON.parse(localStorage.getItem('routineDatesV9')) || { dorso: { ant: "", hoy: "" }, pierna: { ant: "", hoy: "" } };
-        let globalWeight = localStorage.getItem('globalWeightV9') || "75kg";
+
+        let workouts = JSON.parse(localStorage.getItem('gymDataV10')) || defaultWorkouts;
+        let attendance = JSON.parse(localStorage.getItem('gymAttendanceV10')) || [0, 0, 0, 0];
+        let routineDates = JSON.parse(localStorage.getItem('routineDatesV10')) || { dorso: { ant: "", hoy: "" }, pierna: { ant: "", hoy: "" } };
+        let globalWeight = localStorage.getItem('globalWeightV10') || "75kg";
 
         function init() {
             document.getElementById('user-weight').value = globalWeight;
@@ -265,7 +280,6 @@
         function closeVictory() {
             document.getElementById('victory-overlay').style.display = 'none';
             document.getElementById('main-body').classList.remove('beast-mode');
-            // RESET AUTOMÁTICO A GRIS
             attendance = [0, 0, 0, 0];
             save();
             updateAttendanceUI();
@@ -304,11 +318,11 @@
         }
 
         function save() { 
-            localStorage.setItem('gymDataV9', JSON.stringify(workouts)); 
-            localStorage.setItem('gymAttendanceV9', JSON.stringify(attendance));
-            localStorage.setItem('routineDatesV9', JSON.stringify(routineDates));
+            localStorage.setItem('gymDataV10', JSON.stringify(workouts)); 
+            localStorage.setItem('gymAttendanceV10', JSON.stringify(attendance));
+            localStorage.setItem('routineDatesV10', JSON.stringify(routineDates));
         }
-        function saveGlobalWeight() { localStorage.setItem('globalWeightV9', document.getElementById('user-weight').value); }
+        function saveGlobalWeight() { localStorage.setItem('globalWeightV10', document.getElementById('user-weight').value); }
         function updateRoutineDates() {
             routineDates[currentActiveRoutine].ant = document.getElementById('date-ant').value;
             routineDates[currentActiveRoutine].hoy = document.getElementById('date-hoy').value;
