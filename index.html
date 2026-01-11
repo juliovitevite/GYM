@@ -293,3 +293,45 @@
             p.style.top = '-5vh';
             p.style.animationDuration = (Math.random() * 2 + 3) + 's';
             document.body.appendChild(p);
+            setTimeout(() => p.remove(), 5000);
+        }
+
+        function shiftData() {
+            workouts[currentActiveRoutine].forEach(ex => {
+                if(ex.current) ex.prev = ex.current;
+                ex.current = "";
+            });
+            save();
+            renderList(currentActiveRoutine, currentActiveRoutine + '-list');
+            closeModal();
+        }
+
+        function showRoutine(type) {
+            currentActiveRoutine = type;
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + type).classList.add('active');
+            document.getElementById('dorso-list').style.display = type === 'dorso' ? 'flex' : 'none';
+            document.getElementById('pierna-list').style.display = type === 'pierna' ? 'flex' : 'none';
+            document.getElementById('routine-title').innerText = type;
+            document.getElementById('date-ant').value = routineDates[type].ant;
+            document.getElementById('date-hoy').value = routineDates[type].hoy;
+        }
+
+        function save() { 
+            localStorage.setItem('gymDataV11', JSON.stringify(workouts)); 
+            localStorage.setItem('gymAttendanceV11', JSON.stringify(attendance));
+            localStorage.setItem('routineDatesV11', JSON.stringify(routineDates));
+        }
+        function saveGlobalWeight() { localStorage.setItem('globalWeightV11', document.getElementById('user-weight').value); }
+        function updateRoutineDates() {
+            routineDates[currentActiveRoutine].ant = document.getElementById('date-ant').value;
+            routineDates[currentActiveRoutine].hoy = document.getElementById('date-hoy').value;
+            save();
+        }
+        function openModal() { document.getElementById('custom-modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('custom-modal').style.display = 'none'; }
+
+        init();
+    </script>
+</body>
+</html>
