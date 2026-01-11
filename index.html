@@ -186,39 +186,40 @@
 
         const ICON_SETS = [["💪", "🔥", "🏋️"], ["⚡", "🏆", "✨"], ["👑", "💎", "🦁"], ["⚔️", "🔱", "🧿"]];
         
+        // Versión con Cache Busting en las imágenes (?v=12)
         const defaultWorkouts = {
             dorso: [
-                { name: "PRESS PLANO", img: "pecho1.gif", prev: "", current: "" },
-                { name: "PRESS INCLINADO", img: "pecho2.gif", prev: "", current: "" },
-                { name: "PEC FLY MAQUINA", img: "pecho3.gif", prev: "", current: "" },
-                { name: "Remo Gironda", img: "espalda1.gif", prev: "", current: "" },
-                { name: "Pull Over Polea", img: "espalda2.gif", prev: "", current: "" },
-                { name: "Remo Mancuerna", img: "espalda3.gif", prev: "", current: "" },
-                { name: "Facepull", img: "hombros1.gif", prev: "", current: "" },
-                { name: "Pájaros", img: "hombros2.gif", prev: "", current: "" },
-                { name: "Encogimientos", img: "hombros3.gif", prev: "", current: "" },
-                { name: "Hiperextensiones", img: "triceps1.gif", prev: "", current: "" },
-                { name: "Remo en T", img: "triceps2.gif", prev: "", current: "" },
-                { name: "Jalón Supino", img: "biceps1.gif", prev: "", current: "" },
-                { name: "Peso Muerto", img: "biceps2.gif", prev: "", current: "" }
+                { name: "PRESS PLANO", img: "pecho1.gif?v=12", prev: "", current: "" },
+                { name: "PRESS INCLINADO", img: "pecho2.gif?v=12", prev: "", current: "" },
+                { name: "PEC FLY MAQUINA", img: "pecho3.gif?v=12", prev: "", current: "" },
+                { name: "Remo Gironda", img: "espalda1.gif?v=12", prev: "", current: "" },
+                { name: "Pull Over Polea", img: "espalda2.gif?v=12", prev: "", current: "" },
+                { name: "Remo Mancuerna", img: "espalda3.gif?v=12", prev: "", current: "" },
+                { name: "Facepull", img: "hombros1.gif?v=12", prev: "", current: "" },
+                { name: "Pájaros", img: "hombros2.gif?v=12", prev: "", current: "" },
+                { name: "Encogimientos", img: "hombros3.gif?v=12", prev: "", current: "" },
+                { name: "Hiperextensiones", img: "triceps1.gif?v=12", prev: "", current: "" },
+                { name: "Remo en T", img: "triceps2.gif?v=12", prev: "", current: "" },
+                { name: "Jalón Supino", img: "biceps1.gif?v=12", prev: "", current: "" },
+                { name: "Peso Muerto", img: "biceps2.gif?v=12", prev: "", current: "" }
             ],
             pierna: [
-                { name: "Sentadilla Libre", img: "piernas1.jpg", prev: "", current: "" },
-                { name: "Prensa 45°", img: "piernas2.jpg", prev: "", current: "" },
-                { name: "Extensión Cuádriceps", img: "piernas3.jpg", prev: "", current: "" },
-                { name: "Curl Femoral", img: "piernas4.jpg", prev: "", current: "" },
-                { name: "Peso Muerto Rumano", img: "piernas5.jpg", prev: "", current: "" },
-                { name: "Zancadas", img: "piernas6.jpg", prev: "", current: "" },
-                { name: "Gemelos Sentado", img: "piernas7.jpg", prev: "", current: "" },
-                { name: "Aductores Máquina", img: "piernas8.jpg", prev: "", current: "" }
+                { name: "Sentadilla Libre", img: "piernas1.jpg?v=12", prev: "", current: "" },
+                { name: "Prensa 45°", img: "piernas2.jpg?v=12", prev: "", current: "" },
+                { name: "Extensión Cuádriceps", img: "piernas3.jpg?v=12", prev: "", current: "" },
+                { name: "Curl Femoral", img: "piernas4.jpg?v=12", prev: "", current: "" },
+                { name: "Peso Muerto Rumano", img: "piernas5.jpg?v=12", prev: "", current: "" },
+                { name: "Zancadas", img: "piernas6.jpg?v=12", prev: "", current: "" },
+                { name: "Gemelos Sentado", img: "piernas7.jpg?v=12", prev: "", current: "" },
+                { name: "Aductores Máquina", img: "piernas8.jpg?v=12", prev: "", current: "" }
             ]
         };
 
-        // ACTUALIZADO A V11 PARA FORZAR RECARGA DE IMÁGENES
-        let workouts = JSON.parse(localStorage.getItem('gymDataV11')) || defaultWorkouts;
-        let attendance = JSON.parse(localStorage.getItem('gymAttendanceV11')) || [0, 0, 0, 0];
-        let routineDates = JSON.parse(localStorage.getItem('routineDatesV11')) || { dorso: { ant: "", hoy: "" }, pierna: { ant: "", hoy: "" } };
-        let globalWeight = localStorage.getItem('globalWeightV11') || "75kg";
+        // ACTUALIZADO A V12 PARA FORZAR RECARGA COMPLETA
+        let workouts = JSON.parse(localStorage.getItem('gymDataV12')) || defaultWorkouts;
+        let attendance = JSON.parse(localStorage.getItem('gymAttendanceV12')) || [0, 0, 0, 0];
+        let routineDates = JSON.parse(localStorage.getItem('routineDatesV12')) || { dorso: { ant: "", hoy: "" }, pierna: { ant: "", hoy: "" } };
+        let globalWeight = localStorage.getItem('globalWeightV12') || "75kg";
 
         function init() {
             document.getElementById('user-weight').value = globalWeight;
@@ -318,11 +319,11 @@
         }
 
         function save() { 
-            localStorage.setItem('gymDataV11', JSON.stringify(workouts)); 
-            localStorage.setItem('gymAttendanceV11', JSON.stringify(attendance));
-            localStorage.setItem('routineDatesV11', JSON.stringify(routineDates));
+            localStorage.setItem('gymDataV12', JSON.stringify(workouts)); 
+            localStorage.setItem('gymAttendanceV12', JSON.stringify(attendance));
+            localStorage.setItem('routineDatesV12', JSON.stringify(routineDates));
         }
-        function saveGlobalWeight() { localStorage.setItem('globalWeightV11', document.getElementById('user-weight').value); }
+        function saveGlobalWeight() { localStorage.setItem('globalWeightV12', document.getElementById('user-weight').value); }
         function updateRoutineDates() {
             routineDates[currentActiveRoutine].ant = document.getElementById('date-ant').value;
             routineDates[currentActiveRoutine].hoy = document.getElementById('date-hoy').value;
